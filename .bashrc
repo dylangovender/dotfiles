@@ -79,7 +79,7 @@ function parse_git_branch() {
         if [[ -n $(git status --porcelain) ]]; then
             echo -e "\e[01;31m[$branch*]\e[00m"  # Uncommitted changes
         else
-            echo echo -e "\e[01;32m[$branch]\e[00m"
+            echo -e "\e[01;32m[$branch]\e[00m"
         fi
     fi
 }
