@@ -64,25 +64,39 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-PS1='${debian_chroot:+($debian_chroot)}\[\e[01;37m\]\u@\h\[\e[00m\]:$(aws_profile):$(kube_context):\[\e[01;34m\]\w\[\e[00m\]\$ '
+#PS1='${debian_chroot:+($debian_chroot)}\[\e[01;37m\]\u@\h\[\e[00m\]:$(aws_profile):$(kube_context)\[\e[01;34m\]\w\[\e[00m\]\$ '
+PS1='${debian_chroot:+($debian_chroot)}\[\e[01;90m\]\u@\h\[\e[00m\]:$(aws_profile):$(kube_context):$(parse_git_branch):\[\e[01;34m\]\w\[\e[00m\]\n\[\e[01;33m\]\$\[\e[00m\] '
 #PS1='${debian_chroot:+($debian_chroot)}\[\e[01;32m\]\u@\h\[\e[00m\]:\[\e[01;34m\]\w\[\e[00m\]\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
+# Function to get the current Git branch and status
+function parse_git_branch() {
+    if git rev-parse --is-inside-work-tree &>/dev/null; then
+        branch=$(git symbolic-ref --short HEAD 2>/dev/null || git describe --tags --exact-match 2>/dev/null)
+        if [[ -n $(git status --porcelain) ]]; then
+            echo -e "\e[01;31m[$branch*]\e[00m"  # Uncommitted changes
+        else
+            echo echo -e "\e[01;32m[$branch]\e[00m"
+        fi
+    fi
+}
+
+
 # Function to get the current AWS profile and color it based on the environment
 function aws_profile() {
     if [ -n "$AWS_PROFILE" ]; then
         if [ "$AWS_PROFILE" == "uat" ]; then
-            echo -e "\e[01;32m($AWS_PROFILE)\e[00m"  # Green for uat
+            echo -e "\e[01;32m[$AWS_PROFILE]\e[00m"  # Green for uat
         elif [ "$AWS_PROFILE" == "prod" ]; then
-            echo -e "\e[01;31m($AWS_PROFILE)\e[00m"  # Red for prod
+            echo -e "\e[01;31m[$AWS_PROFILE]\e[00m"  # Red for prod
         else
-            echo -e "\e[01;33m($AWS_PROFILE)\e[00m"  # Yellow for others
+            echo -e "\e[01;33m[$AWS_PROFILE]\e[00m"  # Yellow for others
         fi
     else
-        echo -e "(default)"  # Yellow for default
+        echo -e "[No env]"  # Yellow for default
     fi
 }
 
@@ -93,16 +107,17 @@ function kube_context() {
     
     if [ -n "$context" ]; then
         if [[ "$context" == *"dev"* ]]; then
-            echo -e "\e[01;32m($context)\e[00m"  # Green for uat
+            echo -e "\e[01;32m[$context]\e[00m"  # Green for uat
         elif [[ "$context" == *"prod"* ]]; then
-            echo -e "\e[01;31m($context)\e[00m"  # Red for prod
+            echo -e "\e[01;31m[$context]\e[00m"  # Red for prod
         else
-            echo -e "\e[01;33m($context)\e[00m"  # Yellow for others
+            echo -e "\e[01;33m[$context]\e[00m"  # Yellow for others
         fi
     else
-        echo "(no cluster)"
+        echo "[no cluster]"
     fi
 }
+
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -181,5 +196,6 @@ alias kpersonal="export KUBECONFIG=~/.kube/config_personal"
 alias kuatdev="export KUBECONFIG=~/.kube/config_uat_dev"
 alias kuatrancher="export KUBECONFIG=~/.kube/config_uat_rancher"
 alias kuatonyxia="export KUBECONFIG=~/.kube/config_uat_onyxia"
+alias kprodonyxia="export KUBECONFIG=~/.kube/config_prod_onyxia"
 alias kprodrancher="export KUBECONFIG=~/.kube/config_prod_rancher"
 alias kproddev="export KUBECONFIG=~/.kube/config_prod_dev"
