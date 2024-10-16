@@ -186,7 +186,8 @@ assh() {
   aws ssm start-session --target "$instance_id"
 }
 
-wsl.exe -d wsl-vpnkit service wsl-vpnkit start 2> /dev/null
+"/mnt/c/Program Files/WSL/wsl.exe" -d wsl-vpnkit service wsl-vpnkit start 2> /dev/null
+
 alias b="cd .."
 alias awsuat="export AWS_PROFILE=uat"
 alias awsprod="export AWS_PROFILE=prod"
