@@ -144,9 +144,10 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -alF'
+alias ll='ls -lrthF'
 alias la='ls -A'
-alias l='ls -CF'
+alias l='ls -lrth'
+alias v='vi'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -201,3 +202,4 @@ alias kprodonyxia="export KUBECONFIG=~/.kube/config_prod_onyxia"
 alias kprodrancher="export KUBECONFIG=~/.kube/config_prod_rancher"
 alias kproddev="export KUBECONFIG=~/.kube/config_prod_dev"
 alias kproddpl="export KUBECONFIG=~/.kube/config_prod_dpl"
+alias kuatdpl="export KUBECONFIG=~/.kube/config_uat_dpl"
