@@ -174,10 +174,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-
-export AWS_PROFILE="uat"
-export KUBECONFIG=~/.kube/config_uat_onyxia
-
 assh() {
   if [ -z "$1" ]; then
     echo "Please provide an instance ID."
@@ -188,19 +184,3 @@ assh() {
   aws ssm start-session --target "$instance_id"
 }
 
-"/mnt/c/Program Files/WSL/wsl.exe" -d wsl-vpnkit service wsl-vpnkit start 2> /dev/null
-
-alias b="cd .."
-alias awsuat="export AWS_PROFILE=uat"
-alias awsprod="export AWS_PROFILE=prod"
-
-alias k="kubectl"
-alias kpersonal="export KUBECONFIG=~/.kube/config_personal"
-alias kuatdev="export KUBECONFIG=~/.kube/config_uat_dev"
-alias kuatrancher="export KUBECONFIG=~/.kube/config_uat_rancher"
-alias kuatonyxia="export KUBECONFIG=~/.kube/config_uat_onyxia"
-alias kprodonyxia="export KUBECONFIG=~/.kube/config_prod_onyxia"
-alias kprodrancher="export KUBECONFIG=~/.kube/config_prod_rancher"
-alias kproddev="export KUBECONFIG=~/.kube/config_prod_dev"
-alias kproddpl="export KUBECONFIG=~/.kube/config_prod_dpl"
-alias kuatdpl="export KUBECONFIG=~/.kube/config_uat_dpl"
