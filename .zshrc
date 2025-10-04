@@ -113,6 +113,8 @@ alias venv="python3 -m venv .venv && source .venv/bin/activate"
 alias p="python3"
 alias c="z"
 alias cd="z"
+alias hg="history | grep"
+
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/dylangovender/.lmstudio/bin"
 
