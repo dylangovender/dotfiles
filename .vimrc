@@ -1,1 +1,0 @@
-/Users/dylangovender/bashrc/.vimrc
