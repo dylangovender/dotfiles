@@ -114,6 +114,8 @@ alias p="python3"
 alias c="z"
 alias cd="z"
 alias hg="history | grep"
+alias sshwait='while ! ssh -i ~/.ssh/debian-server dylan@192.168.18.10 true; do echo "Waiting for server..."; sleep 5; done && ssh -i ~/.ssh/debian-server dylan@192.168.18.10'
+alias npm="npm --loglevel verbose"
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/dylangovender/.lmstudio/bin"
