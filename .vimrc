@@ -32,7 +32,7 @@ set clipboard=unnamedplus
 
 " -------- Navigation --------
 set scrolloff=5         " keep 5 lines visible when scrolling
-set cursorline          " highlight current line
+" set cursorline          " highlight current line
 
 " -------- Persistent undo --------
 set undofile
