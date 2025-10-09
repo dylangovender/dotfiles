@@ -56,3 +56,9 @@ vnoremap <silent> <A-k> :m '<-2<CR>gv=gv
 
 inoremap <silent> <A-j> <Esc>:m .+1<CR>==gi
 inoremap <silent> <A-k> <Esc>:m .-2<CR>==gi
+
+" ---- Swop up and down motions --- "
+nnoremap j k
+nnoremap k j
+vnoremap j k
+vnoremap k j
