@@ -133,6 +133,12 @@ alias p='python3'
 alias sshwait='while ! ssh -i ~/.ssh/debian-server dylan@192.168.18.10 true; do echo "Waiting for server..."; sleep 5; done && ssh -i ~/.ssh/debian-server dylan@192.168.18.10'
 alias v='vi'
 alias venv="python3 -m venv .venv && source .venv/bin/activate"
+#end of aliases
+
+#turn on vim keybindings
+bindkey -v
+#end keybinding section
+
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/dylangovender/.lmstudio/bin"
