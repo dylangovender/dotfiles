@@ -127,7 +127,7 @@ alias kuatonyxia="export KUBECONFIG=~/.kube/config_uat_onyxia"
 alias kuatrancher="export KUBECONFIG=~/.kube/config_uat_rancher"
 alias l='ls -lrthF' 
 alias la='ls -A'
-alias ll='ls -lrthF .*'
+alias ll='ls -lrthF'
 alias npm="npm --loglevel verbose"
 alias p='python3'
 alias sshwait='while ! ssh -i ~/.ssh/debian-server dylan@192.168.18.10 true; do echo "Waiting for server..."; sleep 5; done && ssh -i ~/.ssh/debian-server dylan@192.168.18.10'
