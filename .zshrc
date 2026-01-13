@@ -135,6 +135,16 @@ alias v='vi'
 alias venv="python3 -m venv .venv && source .venv/bin/activate"
 #end of aliases
 
+assh() {
+  if [ -z "$1" ]; then
+    echo "Please provide an instance ID."
+    return 1
+  fi
+
+  instance_id="$1"
+  aws ssm start-session --target "$instance_id"
+}
+
 #turn on vim keybindings
 bindkey -v
 #end keybinding section
