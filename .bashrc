@@ -87,6 +87,7 @@ function parse_git_branch() {
 
 # Function to get the current AWS profile and color it based on the environment
 function aws_profile() {
+    command -v aws >/dev/null 2>&1 || return
     if [ -n "$AWS_PROFILE" ]; then
         if [ "$AWS_PROFILE" == "uat" ]; then
             echo -e "\e[01;32m[$AWS_PROFILE]\e[00m"  # Green for uat
@@ -96,18 +97,18 @@ function aws_profile() {
             echo -e "\e[01;33m[$AWS_PROFILE]\e[00m"  # Yellow for others
         fi
     else
-        echo -e "[No env]"  # Yellow for default
+        echo -e "[No env]"
     fi
 }
 
 # Function to get the current Kubernetes context
 function kube_context() {
+    command -v kubectl >/dev/null 2>&1 || return
     local context
-    context=$(kubectl config current-context | rev | cut -d'/' -f1 | rev 2>/dev/null)
-    
+    context=$(kubectl config current-context 2>/dev/null | rev | cut -d'/' -f1 | rev)
     if [ -n "$context" ]; then
         if [[ "$context" == *"dev"* ]]; then
-            echo -e "\e[01;32m[$context]\e[00m"  # Green for uat
+            echo -e "\e[01;32m[$context]\e[00m"  # Green for dev
         elif [[ "$context" == *"prod"* ]]; then
             echo -e "\e[01;31m[$context]\e[00m"  # Red for prod
         else
