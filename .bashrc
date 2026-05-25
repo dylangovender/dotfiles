@@ -63,10 +63,23 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+# Build the middle section of the prompt — only includes separators for non-empty parts
+function build_prompt_info() {
+    local parts=() aws kube branch joined
+    aws=$(aws_profile)
+    kube=$(kube_context)
+    branch=$(parse_git_branch)
+    [ -n "$aws" ]    && parts+=("$aws")
+    [ -n "$kube" ]   && parts+=("$kube")
+    [ -n "$branch" ] && parts+=("$branch")
+    if [ ${#parts[@]} -gt 0 ]; then
+        printf -v joined ':%s' "${parts[@]}"
+        echo "$joined"
+    fi
+}
+
 if [ "$color_prompt" = yes ]; then
-#PS1='${debian_chroot:+($debian_chroot)}\[\e[01;37m\]\u@\h\[\e[00m\]:$(aws_profile):$(kube_context)\[\e[01;34m\]\w\[\e[00m\]\$ '
-PS1='${debian_chroot:+($debian_chroot)}\[\e[01;90m\]\u@\h\[\e[00m\]:$(aws_profile):$(kube_context):$(parse_git_branch):\[\e[01;34m\]\w\[\e[00m\]\n\[\e[01;33m\]\$\[\e[00m\] '
-#PS1='${debian_chroot:+($debian_chroot)}\[\e[01;32m\]\u@\h\[\e[00m\]:\[\e[01;34m\]\w\[\e[00m\]\$ '
+PS1='${debian_chroot:+($debian_chroot)}\[\e[01;90m\]\u@\h\[\e[00m\]$(build_prompt_info):\[\e[01;34m\]\w\[\e[00m\]\n\[\e[01;33m\]\$\[\e[00m\] '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
