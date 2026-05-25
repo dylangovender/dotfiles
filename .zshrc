@@ -98,52 +98,11 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
 
-# Set personal aliases, overriding those provided by Oh My Zsh libs,
-# plugins, and themes. Aliases can be placed here, though Oh My Zsh
-# users are encouraged to define aliases within a top-level file in
-# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
-# - $ZSH_CUSTOM/aliases.zsh
-# - $ZSH_CUSTOM/macos.zsh
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-alias awsdefault="export AWS_PROFILE=default"
-alias awsprod="export AWS_PROFILE=prod"
-alias awsuat="export AWS_PROFILE=uat"
-alias b="cd .."
-alias c="z"
-alias cd="z"
-alias hg="history | grep"
-alias k="kubectl"
-alias kpersonal="export KUBECONFIG=~/.kube/config_personal"
-alias kproddev="export KUBECONFIG=~/.kube/config_prod_dev"
-alias kproddpl="export KUBECONFIG=~/.kube/config_prod_dpl"
-alias kprodonyxia="export KUBECONFIG=~/.kube/config_prod_onyxia"
-alias kprodrancher="export KUBECONFIG=~/.kube/config_prod_rancher"
-alias kuatdev="export KUBECONFIG=~/.kube/config_uat_dev"
-alias kuatonyxia="export KUBECONFIG=~/.kube/config_uat_onyxia"
-alias kuatrancher="export KUBECONFIG=~/.kube/config_uat_rancher"
-alias l='ls -lrthF' 
-alias la='ls -A'
-alias ll='ls -lrthF'
-alias npm="npm --loglevel verbose"
-alias p='python3'
+# Shared aliases (also sourced by .bashrc on bash machines)
+[ -f "$HOME/dotfiles/shell/aliases.sh" ] && source "$HOME/dotfiles/shell/aliases.sh"
+
+# Machine-specific aliases (not shared — hardcoded IPs/paths)
 alias sshwait='while ! ssh -i ~/.ssh/debian-server dylan@192.168.18.10 true; do echo "Waiting for server..."; sleep 5; done && ssh -i ~/.ssh/debian-server dylan@192.168.18.10'
-alias v='vi'
-alias venv="python3 -m venv .venv && source .venv/bin/activate"
-#end of aliases
-
-assh() {
-  if [ -z "$1" ]; then
-    echo "Please provide an instance ID."
-    return 1
-  fi
-
-  instance_id="$1"
-  aws ssm start-session --target "$instance_id"
-}
 
 #turn on vim keybindings
 bindkey -v
@@ -178,3 +137,5 @@ eval "$(zoxide init zsh)"
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
+export PATH="/opt/homebrew/opt/findutils/libexec/gnubin:$PATH"
+export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"

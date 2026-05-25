@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_URL="https://github.com/dylangovender/bashrc.git"
-REPO_DIR="$HOME/bashrc"
+REPO_URL="https://github.com/dylangovender/dotfiles.git"
+REPO_DIR="$HOME/dotfiles"
 
 if [ ! -d "$REPO_DIR/.git" ]; then
   git clone "$REPO_URL" "$REPO_DIR"
@@ -19,9 +19,13 @@ backup_if_needed() {
 
 backup_if_needed "$HOME/.zshrc"
 backup_if_needed "$HOME/.p10k.zsh"
+backup_if_needed "$HOME/.vimrc"
+backup_if_needed "$HOME/.bashrc"
 
 ln -sf "$REPO_DIR/.zshrc" "$HOME/.zshrc"
 ln -sf "$REPO_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
+ln -sf "$REPO_DIR/.vimrc" "$HOME/.vimrc"
+ln -sf "$REPO_DIR/.bashrc" "$HOME/.bashrc"
 
 OS="$(uname -s)"
 
@@ -31,18 +35,18 @@ if [ "$OS" = "Darwin" ]; then
     eval "$(/opt/homebrew/bin/brew shellenv)" || true
   fi
   brew update
-  brew install git zsh zoxide fzf powerlevel10k kubectl awscli coreutils findutils gnu-sed gawk
+  brew install git zsh zoxide fzf powerlevel10k kubectl awscli coreutils findutils gnu-sed gawk vim
   if [ -x "/opt/homebrew/opt/fzf/install" ]; then
     yes | /opt/homebrew/opt/fzf/install
   fi
 elif [ "$OS" = "Linux" ]; then
-  if command -v apt >/dev/null 2>&1; then
-    sudo apt update
-    sudo apt install -y git zsh zoxide fzf curl ca-certificates
+  if command -v apt-get >/dev/null 2>&1; then
+    sudo apt-get update -qq
+    sudo apt-get install -y git zsh zoxide fzf curl ca-certificates vim
   elif command -v dnf >/dev/null 2>&1; then
-    sudo dnf install -y git zsh zoxide fzf curl ca-certificates
+    sudo dnf install -y git zsh zoxide fzf curl ca-certificates vim
   elif command -v yum >/dev/null 2>&1; then
-    sudo yum install -y git zsh zoxide fzf curl ca-certificates
+    sudo yum install -y git zsh zoxide fzf curl ca-certificates vim
   fi
 fi
 
@@ -50,14 +54,8 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
   RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
-if [ -f "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
-  true
-else
+if [ ! -f "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
   curl -s "https://get.sdkman.io" | bash
-fi
-
-if [ -f "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
-  . "$HOME/.sdkman/bin/sdkman-init.sh"
 fi
 
 if [ "$SHELL" != "$(command -v zsh)" ]; then
