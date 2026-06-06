@@ -45,6 +45,23 @@ git clone https://github.com/dylangovender/dotfiles.git $HOME\dotfiles
 
 > **Note:** creating a symlink for `$PROFILE` requires Windows Developer Mode (`Settings → For developers → Developer Mode`) or running PowerShell as Administrator. The bootstrap script falls back to a dot-source line automatically if symlinks aren't available.
 
+## Local dependencies (not in this repo)
+
+Some aliases in `.zshrc` reference SSH host aliases defined in `~/.ssh/config`. This file is intentionally not tracked here as it contains machine-specific paths and credentials.
+
+After setting up a new machine, create the relevant `Host` blocks in `~/.ssh/config` manually. The minimum required block format is:
+
+```
+Host <alias>
+    HostName <ip-or-hostname>
+    User <username>
+    IdentityFile ~/.ssh/<keyname>
+    IdentitiesOnly yes
+```
+
+Aliases that depend on `~/.ssh/config` being configured:
+- `sshwait` — requires a host alias matching the name used in the alias
+
 ## Adding aliases
 
 Edit `shell/aliases.sh` (bash/zsh) and mirror the change in `shell/profile.ps1` (PowerShell), then commit and push.

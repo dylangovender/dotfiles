@@ -102,7 +102,7 @@ source $ZSH/oh-my-zsh.sh
 [ -f "$HOME/dotfiles/shell/aliases.sh" ] && source "$HOME/dotfiles/shell/aliases.sh"
 
 # Machine-specific aliases (not shared — hardcoded IPs/paths)
-alias sshwait='while ! ssh -i ~/.ssh/debian-server dylan@192.168.18.10 true; do echo "Waiting for server..."; sleep 5; done && ssh -i ~/.ssh/debian-server dylan@192.168.18.10'
+alias sshwait='while ! ssh debianserver true; do echo "Waiting for server..."; sleep 5; done && ssh debianserver'
 
 #turn on vim keybindings
 bindkey -v
