@@ -35,18 +35,18 @@ if [ "$OS" = "Darwin" ]; then
     eval "$(/opt/homebrew/bin/brew shellenv)" || true
   fi
   brew update
-  brew install git zsh zoxide fzf powerlevel10k kubectl awscli coreutils findutils gnu-sed gawk vim
+  brew install git zsh zoxide fzf powerlevel10k kubectl awscli coreutils findutils gnu-sed gawk vim zip
   if [ -x "/opt/homebrew/opt/fzf/install" ]; then
     yes | /opt/homebrew/opt/fzf/install
   fi
 elif [ "$OS" = "Linux" ]; then
   if command -v apt-get >/dev/null 2>&1; then
     sudo apt-get update -qq
-    sudo apt-get install -y git zsh zoxide fzf curl ca-certificates vim
+    sudo apt-get install -y git zsh zoxide fzf curl ca-certificates vim zip
   elif command -v dnf >/dev/null 2>&1; then
-    sudo dnf install -y git zsh zoxide fzf curl ca-certificates vim
+    sudo dnf install -y git zsh zoxide fzf curl ca-certificates vim zip
   elif command -v yum >/dev/null 2>&1; then
-    sudo yum install -y git zsh zoxide fzf curl ca-certificates vim
+    sudo yum install -y git zsh zoxide fzf curl ca-certificates vim zip
   fi
 fi
 
