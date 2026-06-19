@@ -17,16 +17,6 @@ backup_if_needed() {
   fi
 }
 
-backup_if_needed "$HOME/.zshrc"
-backup_if_needed "$HOME/.p10k.zsh"
-backup_if_needed "$HOME/.vimrc"
-backup_if_needed "$HOME/.bashrc"
-
-ln -sf "$REPO_DIR/.zshrc" "$HOME/.zshrc"
-ln -sf "$REPO_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
-ln -sf "$REPO_DIR/.vimrc" "$HOME/.vimrc"
-ln -sf "$REPO_DIR/.bashrc" "$HOME/.bashrc"
-
 OS="$(uname -s)"
 
 if [ "$OS" = "Darwin" ]; then
@@ -35,10 +25,11 @@ if [ "$OS" = "Darwin" ]; then
     eval "$(/opt/homebrew/bin/brew shellenv)" || true
   fi
   brew update
-  brew install git zsh zoxide fzf powerlevel10k kubectl awscli coreutils findutils gnu-sed gawk vim zip
+  brew install git zsh zoxide fzf kubectl awscli coreutils findutils gnu-sed gawk vim zip
   if [ -x "/opt/homebrew/opt/fzf/install" ]; then
     yes | /opt/homebrew/opt/fzf/install
   fi
+
 elif [ "$OS" = "Linux" ]; then
   if command -v apt-get >/dev/null 2>&1; then
     sudo apt-get update -qq
@@ -50,20 +41,46 @@ elif [ "$OS" = "Linux" ]; then
   fi
 fi
 
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-
+# ✅ Install Oh My Zsh deterministically
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
-  RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  git clone https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh"
 fi
 
+mkdir -p "$HOME/.oh-my-zsh/custom/themes"
+
+# ✅ Install Powerlevel10k safely (idempotent)
+P10K_DIR="$HOME/.oh-my-zsh/custom/themes/powerlevel10k"
+if [ ! -d "$P10K_DIR" ]; then
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$P10K_DIR"
+fi
+
+# ✅ Verify Oh My Zsh installed correctly
+if [ ! -f "$HOME/.oh-my-zsh/oh-my-zsh.sh" ]; then
+  echo "ERROR: Oh My Zsh install failed" >&2
+  exit 1
+fi
+
+# ✅ Install SDKMAN (optional, guarded)
 if [ ! -f "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
   curl -s "https://get.sdkman.io" | bash
 fi
 
+# ✅ ONLY NOW link dotfiles (after dependencies exist)
+backup_if_needed "$HOME/.zshrc"
+backup_if_needed "$HOME/.p10k.zsh"
+backup_if_needed "$HOME/.vimrc"
+backup_if_needed "$HOME/.bashrc"
+
+ln -sf "$REPO_DIR/.zshrc" "$HOME/.zshrc"
+ln -sf "$REPO_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
+ln -sf "$REPO_DIR/.vimrc" "$HOME/.vimrc"
+ln -sf "$REPO_DIR/.bashrc" "$HOME/.bashrc"
+
+# ✅ Switch shell
 if [ "$SHELL" != "$(command -v zsh)" ]; then
   if command -v chsh >/dev/null 2>&1; then
     chsh -s "$(command -v zsh)" "$USER" || true
   fi
 fi
 
-echo "Bootstrap complete. Open a new terminal or run: exec zsh"
+echo "Bootstrap complete. Run: exec zsh"
