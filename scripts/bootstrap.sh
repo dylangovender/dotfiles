@@ -19,6 +19,13 @@ backup_if_needed() {
 
 OS="$(uname -s)"
 
+# ✅ BACKUP EARLY (before installs)
+backup_if_needed "$HOME/.zshrc"
+backup_if_needed "$HOME/.p10k.zsh"
+backup_if_needed "$HOME/.vimrc"
+backup_if_needed "$HOME/.bashrc"
+
+
 if [ "$OS" = "Darwin" ]; then
   if ! command -v brew >/dev/null 2>&1; then
     NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -66,11 +73,9 @@ if [ ! -f "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
 fi
 
 # ✅ ONLY NOW link dotfiles (after dependencies exist)
-backup_if_needed "$HOME/.zshrc"
-backup_if_needed "$HOME/.p10k.zsh"
-backup_if_needed "$HOME/.vimrc"
-backup_if_needed "$HOME/.bashrc"
 
+
+# ✅ Link dotfiles AFTER dependencies exist
 ln -sf "$REPO_DIR/.zshrc" "$HOME/.zshrc"
 ln -sf "$REPO_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
 ln -sf "$REPO_DIR/.vimrc" "$HOME/.vimrc"
