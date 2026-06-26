@@ -76,3 +76,51 @@ render_kube "arn:aws:eks:af-south-1:186111169403:cluster/eks-onyxia-prod-cluster
 render_kube "arn:aws:eks:af-south-1:186111169403:cluster/eks-onyxia-uat-cluster" "team-namespace"
 render_kube "minikube"
 render_kube "docker-desktop"
+
+# These segments have no _CLASSES pattern array — just one static color each.
+# They only render when Powerlevel10k's live detection finds something:
+# virtualenv/anaconda/pyenv check shell env vars or the pyenv binary, and
+# java_version checks for `java` on PATH. So "testing" them means reporting
+# what's actually detected on this machine, not a color/class mapping.
+report_static() {
+  local label=$1 fg_var=$2 bg_var=$3 sample=$4 state=$5
+  local fg=${(P)fg_var} bg=${(P)bg_var}
+  printf "  %-14s " "$label"
+  swatch "$fg" "$bg" " $sample "
+  print "    -> $state"
+}
+
+print
+print "Environment-detected segments (single static color, no classes):"
+
+if [[ -n $VIRTUAL_ENV ]]; then
+  report_static virtualenv POWERLEVEL9K_VIRTUALENV_FOREGROUND POWERLEVEL9K_VIRTUALENV_BACKGROUND \
+    "${VIRTUAL_ENV:t}" "ACTIVE: \$VIRTUAL_ENV=$VIRTUAL_ENV"
+else
+  report_static virtualenv POWERLEVEL9K_VIRTUALENV_FOREGROUND POWERLEVEL9K_VIRTUALENV_BACKGROUND \
+    "venv-name" "inactive: \$VIRTUAL_ENV is unset (hidden until 'source <venv>/bin/activate')"
+fi
+
+if [[ -n $CONDA_DEFAULT_ENV ]]; then
+  report_static anaconda POWERLEVEL9K_ANACONDA_FOREGROUND POWERLEVEL9K_ANACONDA_BACKGROUND \
+    "$CONDA_DEFAULT_ENV" "ACTIVE: \$CONDA_DEFAULT_ENV=$CONDA_DEFAULT_ENV"
+else
+  report_static anaconda POWERLEVEL9K_ANACONDA_FOREGROUND POWERLEVEL9K_ANACONDA_BACKGROUND \
+    "env-name" "inactive: \$CONDA_DEFAULT_ENV is unset (hidden until 'conda activate <env>')"
+fi
+
+if command -v pyenv >/dev/null 2>&1; then
+  report_static pyenv POWERLEVEL9K_PYENV_FOREGROUND POWERLEVEL9K_PYENV_BACKGROUND \
+    "$(pyenv version-name 2>/dev/null)" "found on PATH: $(command -v pyenv)"
+else
+  report_static pyenv POWERLEVEL9K_PYENV_FOREGROUND POWERLEVEL9K_PYENV_BACKGROUND \
+    "3.x.x" "not found on PATH (segment hidden)"
+fi
+
+if command -v java >/dev/null 2>&1; then
+  report_static java_version POWERLEVEL9K_JAVA_VERSION_FOREGROUND POWERLEVEL9K_JAVA_VERSION_BACKGROUND \
+    "$(java -version 2>&1 | head -1)" "found on PATH: $(command -v java)"
+else
+  report_static java_version POWERLEVEL9K_JAVA_VERSION_FOREGROUND POWERLEVEL9K_JAVA_VERSION_BACKGROUND \
+    "17.0.2" "not found on PATH (segment hidden) — install a JDK or fix PATH in this shell"
+fi
