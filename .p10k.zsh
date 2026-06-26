@@ -1405,11 +1405,18 @@
   #   typeset -g POWERLEVEL9K_KUBECONTEXT_TEST_VISUAL_IDENTIFIER_EXPANSION='⭐'
   #   typeset -g POWERLEVEL9K_KUBECONTEXT_TEST_CONTENT_EXPANSION='> ${P9K_CONTENT} <'
   typeset -g POWERLEVEL9K_KUBECONTEXT_CLASSES=(
-      # '*prod*'  PROD    # These values are examples that are unlikely
-      # '*test*'  TEST    # to match your needs. Customize them as needed.
+      '*prod*'  PROD
+      '*dev*'   DEV
+      '*uat*'   UAT
       '*'       DEFAULT)
-  typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_FOREGROUND=7
-  typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_BACKGROUND=5
+  typeset -g POWERLEVEL9K_KUBECONTEXT_PROD_FOREGROUND=7
+  typeset -g POWERLEVEL9K_KUBECONTEXT_PROD_BACKGROUND=1
+  typeset -g POWERLEVEL9K_KUBECONTEXT_DEV_FOREGROUND=0
+  typeset -g POWERLEVEL9K_KUBECONTEXT_DEV_BACKGROUND=2
+  typeset -g POWERLEVEL9K_KUBECONTEXT_UAT_FOREGROUND=0
+  typeset -g POWERLEVEL9K_KUBECONTEXT_UAT_BACKGROUND=2
+  typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_FOREGROUND=0
+  typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_BACKGROUND=3
   # typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
   # Use POWERLEVEL9K_KUBECONTEXT_CONTENT_EXPANSION to specify the content displayed by kubecontext
@@ -1489,11 +1496,15 @@
   #   typeset -g POWERLEVEL9K_AWS_TEST_VISUAL_IDENTIFIER_EXPANSION='⭐'
   #   typeset -g POWERLEVEL9K_AWS_TEST_CONTENT_EXPANSION='> ${P9K_CONTENT} <'
   typeset -g POWERLEVEL9K_AWS_CLASSES=(
-      # '*prod*'  PROD    # These values are examples that are unlikely
-      # '*test*'  TEST    # to match your needs. Customize them as needed.
+      '*prod*'  PROD
+      '*uat*'   UAT
       '*'       DEFAULT)
-  typeset -g POWERLEVEL9K_AWS_DEFAULT_FOREGROUND=7
-  typeset -g POWERLEVEL9K_AWS_DEFAULT_BACKGROUND=1
+  typeset -g POWERLEVEL9K_AWS_PROD_FOREGROUND=7
+  typeset -g POWERLEVEL9K_AWS_PROD_BACKGROUND=1
+  typeset -g POWERLEVEL9K_AWS_UAT_FOREGROUND=0
+  typeset -g POWERLEVEL9K_AWS_UAT_BACKGROUND=2
+  typeset -g POWERLEVEL9K_AWS_DEFAULT_FOREGROUND=0
+  typeset -g POWERLEVEL9K_AWS_DEFAULT_BACKGROUND=3
   # typeset -g POWERLEVEL9K_AWS_DEFAULT_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
   # AWS segment format. The following parameters are available within the expansion.
